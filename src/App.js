@@ -101,30 +101,34 @@ export class Board extends React.Component {
       return;
     }
     if(!this.state.selection.movearea[[x, y]]) {
-      this.setState((state) => ({
-        selection: null,
-      }));
+      this.setState({...this.state, selection: null});
 
       return;
     }
-    this.setState((state) => ({
-      walkers: state.walkers.map((walker) => {
-        if (walker.name === this.state.selection.walker_name) {
-          return walker.moved(x, y);
-        } else {
-          return walker;
-        }
-      }),
+    const walkers = this.state.walkers.map((walker) => {
+      if (walker.name === this.state.selection.walker_name) {
+        return walker.moved(x, y);
+      } else {
+        return walker;
+      }
+    });
+
+    this.setState({...this.state, 
+      walkers: walkers,
       selection: null,
-    }));
+    });
   }
 
   select_walker(x, y, walker_name) {
-    this.setState((state) => {
-      const movearea = Dir.all(x, y).reduce((p, c) => { p[[c.x, c.y]] = 1; return p; }, {});
-      return {
-        selection: {x: x, y: y, walker_name: walker_name, movearea: movearea},
-      };
+    const movearea = Dir.all(x, y).reduce((p, c) => { p[[c.x, c.y]] = 1; return p; }, {});
+
+    this.setState({...this.state,
+        selection: {
+          x: x,
+          y: y,
+          walker_name: walker_name,
+          movearea: movearea
+        }
     });
   }
 
@@ -230,10 +234,15 @@ export class Cell extends React.Component {
 
 export class Walker extends React.Component {
   render() {
-    return <div onClick={(e) => {
+    const handler = e => {
       e.stopPropagation();
       this.props.onClick();
-    }}>Walker {this.props.color} {this.props.state}</div>;
+    };
+    return (
+      <div onClick={handler}>
+        Walker {this.props.color} {this.props.state}
+      </div>
+    );
   }
 
 }
