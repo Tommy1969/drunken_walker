@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-export function App() {
+export const App = () => {
   return (
     <div className="App">
       <header className="App-header">
@@ -22,7 +22,7 @@ export function App() {
       <Board/>
     </div>
   );
-}
+};
 
 class Dir {
   //@formatter:off
@@ -69,7 +69,7 @@ export const Model = {
     }
   },
 
-  build_cells: function(size) {
+  build_cells: (size) => {
     const range = (n) => Array.from({length: n}, (v, k) => k);
     return range(size).reduce((p, c, y) => {
       range(Math.ceil(size / 2) + Math.min(y, size - y - 1)).forEach((row, base_x) => {

@@ -2,16 +2,16 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import {App, Model, Board, Cell, Walker} from './App';
 
-function find_cell(wrapper, x, y) {
+const find_cell = (wrapper, x, y) => {
   return wrapper.find(Cell).findWhere(n => n.key() === `(${x},${y})`);
-}
+};
 
 it('renders without crashing', () => {
   shallow(<App/>);
 });
 
 describe('Board', () => {
-  describe('appearance', function () {
+  describe('appearance', () => {
     it('renders', () => {
       shallow(<Board/>);
     });
@@ -33,16 +33,16 @@ describe('Board', () => {
 });
 
 describe('playing game', () => {
-  var wrapper = null;
+  let wrapper = null;
   beforeEach(() => {
     wrapper = mount(<Board/>);
   });
 
-  function get_walker(name) {
+  const get_walker = (name) => {
     return wrapper.find(Walker).filterWhere((w) => w.props().name === name).at(0);
-  }
+  };
 
-  describe('moving walker', function () {
+  describe('moving walker', () => {
     it('select piece and move', () => {
       expect(wrapper.find(Walker).length).toBe(2);
       const walker = get_walker("R01");
@@ -55,8 +55,8 @@ describe('playing game', () => {
       expect(walker_after.parents(Cell).key()).toBe("(0,0)");
     });
 
-    describe('movearea are correct', function () {
-      function dump_cell(ofClass) {
+    describe('movearea are correct', () => {
+      const dump_cell = (ofClass) => {
         const cells = wrapper.find(Cell).map((c) => c.find('li').hasClass(ofClass) ? "o" : "_");
         expect(cells.length).toEqual(19);
         let dump = [];
@@ -66,7 +66,7 @@ describe('playing game', () => {
         dump[3] = " " + cells[12] + " " + cells[13] + " " + cells[14] + " " + cells[15] + " ";
         dump[4] = "  " + cells[16] + " " + cells[17] + " " + cells[18] + "  ";
         return dump;
-      }
+      };
 
       it('show move area from (1,0)', () => {
         get_walker("R01").simulate('click');
@@ -101,7 +101,7 @@ describe('playing game', () => {
       });
     });
 
-    describe('selecting walker for moving', function () {
+    describe('selecting walker for moving',  () => {
 
       it('clicking an empty cell does not select a walker', () => {
         find_cell(wrapper, 3, 3).simulate('click');
@@ -123,7 +123,7 @@ describe('playing game', () => {
 
     });
 
-    describe('uncertainty based scenario tests', function () {
+    describe('uncertainty based scenario tests', () => {
       it('select a walker, unselect it, select another walker then move', () => {
         expect(get_walker("R01").parents(Cell).key()).toBe("(1,0)");
         expect(get_walker("R02").parents(Cell).key()).toBe("(2,0)");
@@ -141,12 +141,12 @@ describe('playing game', () => {
 });
 
 
-describe('Model', function() {
-  it('Model.Walker is immutable', function() {
+describe('Model', () => {
+  it('Model.Walker is immutable', () => {
     const sut = new Model.Walker("dummy", 0, 0);
     expect(() => {sut.x = -1;}).toThrow();
   });
-  it('Model.Cell is immutable', function() {
+  it('Model.Cell is immutable', () => {
     const sut = new Model.Cell("key", 0, 0, "empty");
     expect(() => {sut.x = -1;}).toThrow();
   });
