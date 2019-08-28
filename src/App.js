@@ -209,13 +209,13 @@ export class Cell extends React.Component {
 
   render() {
     let classes = [];
-    if(this.props.state == 'empty') {
+    if(this.props.state === 'empty') {
       classes.push('empty');
     }
-    if(this.props.state == 'movearea') {
+    if(this.props.state === 'movearea') {
       classes.push('movearea');
     }
-    if(this.state.state == 'mouseover') {
+    if(this.state.state === 'mouseover') {
       classes.push('mouseover');
     }
     return (
